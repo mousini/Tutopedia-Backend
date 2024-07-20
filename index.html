@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-In & Registration</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(to right, purple, pink);
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        form {
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="email"],
+        input[type="password"],
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: purple;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: darkviolet;
+        }
+
+        .toggle-link {
+            display: block;
+            margin-top: 15px;
+            text-align: center;
+            color: purple;
+            cursor: pointer;
+        }
+
+        .toggle-link:hover {
+            text-decoration: underline;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div id="signin-container" class="container">
+        <h1>Sign In </h1>
+        <form>
+            <div class="form-group">
+                <label for="email-signin">Email:</label>
+                <input type="email" id="email-signin" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password-signin">Password:</label>
+                <input type="password" id="password-signin" name="password" required>
+            </div>
+            <button type="submit">Sign In</button>
+            <span class="toggle-link" onclick="toggleForm()">Create new account</span>
+        </form>
+    </div>
+
+    <div id="register-container" class="container hidden">
+        <h1>Register in Tutopedia</h1>
+        <form action="/sign_up" method="POST">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email-register">Email:</label>
+                <input type="email" id="email-register" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password-register">Password:</label>
+                <input type="password" id="password-register" name="password" required>
+            </div>
+            <button type="submit">Register</button>
+            <span class="toggle-link" onclick="toggleForm()">Already have an account? Login here</span>
+        </form>
+    </div>
+
+    <script>
+        function toggleForm() {
+            const signInContainer = document.getElementById('signin-container');
+            const registerContainer = document.getElementById('register-container');
+            if (signInContainer.classList.contains('hidden')) {
+                signInContainer.classList.remove('hidden');
+                registerContainer.classList.add('hidden');
+            } else {
+                signInContainer.classList.add('hidden');
+                registerContainer.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
