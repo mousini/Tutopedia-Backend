@@ -1,6 +1,7 @@
-var express = require("express");
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
+
+    const express = require("express");
+const bodyParser = require("body-parser");
+const mongoose = require("mongoose");
 
 const app = express();
 
@@ -9,54 +10,30 @@ app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect('mongodb://localhost:27017/Database', { useNewUrlParser: true, useUnifiedTopology: true });
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 db.on('error', () => console.log("Error in Connecting to Database"));
 db.once('open', () => console.log("Connected to Database"));
 
 app.post("/sign_up", (req, res) => {
-    var name = req.body.name;
-    var email = req.body.email;
-    var password = req.body.password;
+    const { name, email, password } = req.body;
 
-    var data = {
-        "name": name,
-        "email": email,
-        "password": password
-    };
+    const data = { name, email, password };
 
-    db.collection('tutopedia2').insertOne(data, (err, collection) => {
+    db.collection('tutopedia2').insertOne(data, (err) => {
         if (err) {
-            throw err;
-        }
-        console.log("Record Inserted Successfully");
-    });
-
-    return res.redirect('signup_successful.html');
-});
-
-app.post("/sign_in", (req, res) => {
-    var email = req.body.email;
-    var password = req.body.password;
-
-    db.collection('tutopedia2').findOne({ email: email }, (err, user) => {
-        if (err) {
-            res.status(500).send('Error occurred while signing in');
-        } else if (!user) {
-            res.status(400).send('User not found');
-        } else if (user.password !== password) {
-            res.status(400).send('Invalid password');
+            console.log("Error inserting record", err);
+            res.status(500).send("Server Error");
         } else {
-            res.send('Sign-in successful');
+            console.log("Record Inserted Successfully");
+            res.redirect('/signup_successful.html');
         }
     });
 });
 
 app.get("/", (req, res) => {
-    res.set({
-        "Allow-access-Allow-Origin": '*'
-    });
-    return res.redirect('index.html');
-}).listen(3000);
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
-console.log("Listening on port 3000");
+const port = process.env.PORT || 3000;
+app.listen(port, () => console.log(`Listening on port ${port}`));
